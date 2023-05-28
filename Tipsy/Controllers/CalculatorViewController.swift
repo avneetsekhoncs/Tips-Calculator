@@ -12,12 +12,19 @@ class CalculatorViewController: UIViewController {
     
     var count = 0
     var splitCount = 2
+    var tip = 0.0
     
     @IBOutlet weak var billTextField: UITextField!
     @IBOutlet weak var zeroPctButton: UIButton!
     @IBOutlet weak var tenPctButton: UIButton!
     @IBOutlet weak var twentyPctButton: UIButton!
     @IBOutlet weak var splitNumberLabel: UILabel!
+    
+    override func viewDidLoad() {
+        // If user doesn't select a tip, 10% is default
+        tip = 0.1
+    }
+    
     
     @IBAction func tipChanged(_ sender: UIButton) {
         
@@ -28,8 +35,7 @@ class CalculatorViewController: UIViewController {
         
         let buttonTitle = sender.currentTitle!
         let titleWithoutCharacters = String(buttonTitle.dropLast())
-        let tip = Float(titleWithoutCharacters)! / 100
-        print(tip)
+        tip = Double(titleWithoutCharacters)! / 100
          
     }
     
@@ -39,7 +45,13 @@ class CalculatorViewController: UIViewController {
     }
     
     @IBAction func calculatePressed(_ sender: UIButton) {
-        print(splitCount)
+        let uInput = Double(billTextField.text!)
+        billTextField.endEditing(true)
+        
+        let totalBill = uInput! + (uInput! * tip)
+        let splitBill = totalBill / Double(splitCount)
+        print(String(format: "%.2f", splitBill))
+        
     }
     
 }
