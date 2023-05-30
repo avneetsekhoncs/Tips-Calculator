@@ -13,6 +13,9 @@ class CalculatorViewController: UIViewController {
     var count = 0
     var splitCount = 2
     var tip = 0.0
+    var splitBill = 0.0
+    var titleWithoutCharacters = "10"
+    
     
     @IBOutlet weak var billTextField: UITextField!
     @IBOutlet weak var zeroPctButton: UIButton!
@@ -34,9 +37,8 @@ class CalculatorViewController: UIViewController {
         sender.isSelected = true
         
         let buttonTitle = sender.currentTitle!
-        let titleWithoutCharacters = String(buttonTitle.dropLast())
+        titleWithoutCharacters = String(buttonTitle.dropLast())
         tip = Double(titleWithoutCharacters)! / 100
-         
     }
     
     @IBAction func stepperValueChanged(_ sender: UIStepper) {
@@ -45,13 +47,23 @@ class CalculatorViewController: UIViewController {
     }
     
     @IBAction func calculatePressed(_ sender: UIButton) {
-        let uInput = Double(billTextField.text!)
+        let userValueInput = Double(billTextField.text!)
         billTextField.endEditing(true)
         
-        let totalBill = uInput! + (uInput! * tip)
-        let splitBill = totalBill / Double(splitCount)
-        print(String(format: "%.2f", splitBill))
+        let totalBill = userValueInput! + (userValueInput! * tip)
+        splitBill = totalBill / Double(splitCount)
         
+        self.performSegue(withIdentifier: "goToResult", sender: self)
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToResult" {
+            let destinationVC = segue.destination as! ResultsViewController
+            destinationVC.splitValue = String(format: "%.2f", splitBill)
+            destinationVC.selectTip = titleWithoutCharacters
+            destinationVC.chooseSplit = String(format: "%d", splitCount)
+        }
     }
     
 }
