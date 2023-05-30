@@ -7,3 +7,19 @@
 //
 
 import Foundation
+
+struct CalculatorBrain {
+    
+    var splitBill = 0.0
+    
+    mutating func calculateBill(userValueInput: Double, tip: Double, splitCount: Int) {
+        
+        let totalBill = userValueInput + (userValueInput * tip)
+        splitBill = totalBill / Double(splitCount)
+
+    }
+    
+    func getSplitBillValue() -> String {
+        return String(format: "%.2f", splitBill)
+    }
+}

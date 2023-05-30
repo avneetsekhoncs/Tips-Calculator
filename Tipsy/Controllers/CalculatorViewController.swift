@@ -10,12 +10,12 @@ import UIKit
 
 class CalculatorViewController: UIViewController {
     
+    var calculatorBrain = CalculatorBrain()
+    
     var count = 0
     var splitCount = 2
     var tip = 0.0
-    var splitBill = 0.0
     var titleWithoutCharacters = "10"
-    
     
     @IBOutlet weak var billTextField: UITextField!
     @IBOutlet weak var zeroPctButton: UIButton!
@@ -27,7 +27,6 @@ class CalculatorViewController: UIViewController {
         // If user doesn't select a tip, 10% is default
         tip = 0.1
     }
-    
     
     @IBAction func tipChanged(_ sender: UIButton) {
         
@@ -50,8 +49,7 @@ class CalculatorViewController: UIViewController {
         let userValueInput = Double(billTextField.text!)
         billTextField.endEditing(true)
         
-        let totalBill = userValueInput! + (userValueInput! * tip)
-        splitBill = totalBill / Double(splitCount)
+        calculatorBrain.calculateBill(userValueInput: userValueInput!, tip: tip, splitCount: splitCount)
         
         self.performSegue(withIdentifier: "goToResult", sender: self)
         
@@ -60,7 +58,7 @@ class CalculatorViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToResult" {
             let destinationVC = segue.destination as! ResultsViewController
-            destinationVC.splitValue = String(format: "%.2f", splitBill)
+            destinationVC.splitValue = calculatorBrain.getSplitBillValue()
             destinationVC.selectTip = titleWithoutCharacters
             destinationVC.chooseSplit = String(format: "%d", splitCount)
         }
