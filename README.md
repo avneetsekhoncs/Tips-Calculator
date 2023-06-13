@@ -9,3 +9,5 @@ A swift application made for bill splitting and tips calculating. Base project f
 * Pass by value vs. pass by reference. 
 * Formatting Strings. 
 * Color literals.
+
+>This is a companion project to The App Brewery's Complete App Development Bootcamp, check out the full course at [www.appbrewery.co](https://www.appbrewery.co/)
